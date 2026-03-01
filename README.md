@@ -43,7 +43,7 @@ ros2 launch melfa_rv7frl_moveit_config rv7frl_moveit.launch.py
 
 # 2. Run the action sequencer
 [Terminal 3]
-ros2 launch action_sequencer action_sequencer.launch.py
+ros2 launch action_sequencer action_sequencer.launch.py arm_model:=rv7frl
 ```
 
 ### What It Does
