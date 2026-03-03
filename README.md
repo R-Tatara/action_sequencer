@@ -48,9 +48,9 @@ ros2 launch action_sequencer action_sequencer.launch.py arm_model:=rv7frl
 
 ### What It Does
 
-1. Initializes MoveIt `MoveGroupInterface` with the Pilz PTP planner
+1. Initializes MoveIt `MoveGroupInterface`
 2. Adds a collision box to the planning scene
-3. Executes the motion sequence:
+3. Executes the motion sequence
 
 ## License
 
