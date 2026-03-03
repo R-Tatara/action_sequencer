@@ -22,11 +22,15 @@ ActionSequencer::ActionSequencer(const rclcpp::NodeOptions& options)
 
 // Creates and configures the MoveGroupInterface
 void ActionSequencer::initMoveGroup() {
+  // Retrieve the arm model from the parameter server
   planning_group_ = get_parameter("arm_model").as_string();
+
+  // Instantiate MoveGroupInterface
   move_group_ = std::make_shared<moveit::planning_interface::MoveGroupInterface>(
     shared_from_this(), planning_group_);
-  move_group_->setPlanningPipelineId("pilz_industrial_motion_planner");
-  move_group_->setPlannerId("PTP");
+
+  // Set the motion planning planner parameters
+  setPlanner("pilz_industrial_motion_planner", "PTP");
   move_group_->setPlanningTime(10.0);
   move_group_->setPoseReferenceFrame("world");
   setSpeedScale(0.05, 0.05);
@@ -40,6 +44,19 @@ void ActionSequencer::setSpeedScale(double vel, double acc) {
   }
   move_group_->setMaxVelocityScalingFactor(vel);
   move_group_->setMaxAccelerationScalingFactor(acc);
+}
+
+// Changes the motion planning pipeline and planner algorithm
+void ActionSequencer::setPlanner(const std::string& pipeline_id,
+                                 const std::string& planner_id) {
+  if (!move_group_) {
+    RCLCPP_ERROR(LOGGER, "MoveGroup is not initialized.");
+    return;
+  }
+  move_group_->setPlanningPipelineId(pipeline_id);
+  move_group_->setPlannerId(planner_id);
+  RCLCPP_INFO(LOGGER, "Planner set to pipeline='%s', planner='%s'",
+    pipeline_id.c_str(), planner_id.c_str());
 }
 
 // Plans and executes a motion with return value checking
