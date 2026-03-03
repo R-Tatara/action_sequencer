@@ -122,25 +122,25 @@ void ActionSequencer::addCollisionBox(
 // Executes the motion sequence (called from a dedicated thread)
 void ActionSequencer::executeActionSequence() {
   const auto & tp = teaching_points::pose_map;
-
   initMoveGroup();
 
   // Add box object
-  geometry_msgs::msg::Pose desk_pose;
-  desk_pose.position.x = 0.6;
-  desk_pose.position.z = 0.05;
-  desk_pose.orientation.w = 1.0;
-  addCollisionBox("desk", {0.4, 0.6, 0.1}, desk_pose);
+  addCollisionBox("desk", {0.4, 0.6, 0.1},
+    teaching_points::makePose(0.6, 0.0, 0.05, 0.0, 0.0, 0.0, 1.0));
 
   // Action sequence
-  moveToHome();
-  moveToPoseTarget(tp.at("pick_approach"));
-  moveToPoseTarget(tp.at("pick_grasp"));
-  moveToPoseTarget(tp.at("pick_retreat"));
-  moveToPoseTarget(tp.at("place_approach"));
-  moveToPoseTarget(tp.at("place_release"));
-  moveToPoseTarget(tp.at("place_retreat"));
-  moveToHome();
+  if (!moveToHome() ||
+      !moveToPoseTarget(tp.at("pick_approach")) ||
+      !moveToPoseTarget(tp.at("pick_grasp")) ||
+      !moveToPoseTarget(tp.at("pick_retreat")) ||
+      !moveToPoseTarget(tp.at("place_approach")) ||
+      !moveToPoseTarget(tp.at("place_release")) ||
+      !moveToPoseTarget(tp.at("place_retreat")) ||
+      !moveToHome()) {
+    RCLCPP_ERROR(LOGGER, "Action sequence aborted due to motion failure");
+    return;
+  }
+  RCLCPP_INFO(LOGGER, "Action sequence completed successfully");
 }
 
 int main(int argc, char** argv) {
