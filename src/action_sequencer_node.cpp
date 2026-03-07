@@ -31,9 +31,10 @@ void ActionSequencer::initMoveGroup() {
 
   // Set the motion planning planner parameters
   setPlanner("pilz_industrial_motion_planner", "PTP");
-  move_group_->setPlanningTime(10.0);
+  move_group_->setPlanningTime(5.0);
+  move_group_->setNumPlanningAttempts(10);
   move_group_->setPoseReferenceFrame("world");
-  setSpeedScale(0.05, 0.05);
+  setSpeedScale(0.1, 0.1);
 }
 
 // Sets velocity and acceleration scaling factors

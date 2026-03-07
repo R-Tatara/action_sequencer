@@ -51,7 +51,6 @@ public:
   // 1) pipeline_id = "pilz_industrial_motion_planner"
   //    - planner_id: "PTP"  (point-to-point, default)
   //    - planner_id: "LIN"  (linear Cartesian motion)
-  //    - planner_id: "CIRC" (circular Cartesian motion)
   //
   // 2) pipeline_id = "ompl"
   //    - planner_id: "RRTConnectkConfigDefault"  (fast, default for OMPL)
@@ -65,12 +64,6 @@ public:
   //    - planner_id: "BKPIECEkConfigDefault"
   //    - planner_id: "LBKPIECEkConfigDefault"
   //    - planner_id: "TRRTkConfigDefault"
-  //
-  // 3) pipeline_id = "chomp"
-  //    - planner_id: "" (CHOMP has no sub-planner selection)
-  //
-  // 4) pipeline_id = "stomp"
-  //    - planner_id: "" (STOMP has no sub-planner selection)
   void setPlanner(const std::string& pipeline_id, const std::string& planner_id);
 
   // Plans and executes a motion with return value checking
